@@ -11,10 +11,10 @@ import { UserPlus, Mail, Lock, User as UserIcon, Loader2, Eye, EyeOff, AlertCirc
 import { signup } from '@/app/actions/auth';
 
 const signupSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  role: z.enum(['Admin', 'Agent']).default('Agent'),
+  name: z.string('Name must be at least 2 characters'),
+  email: z.string('Please enter a valid email address'),
+  password: z.string('Password must be at least 6 characters'),
+  role: z.enum(['Admin', 'Agent']),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -29,6 +29,7 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -187,14 +188,14 @@ export default function SignupPage() {
             <div className="grid grid-cols-2 gap-3">
               <label className={`
                 flex items-center justify-center p-3 rounded-xl border cursor-pointer transition-all
-                ${register('role').value === 'Agent' ? 'bg-blue-50 border-blue-500 text-blue-700 ring-2 ring-blue-500/20' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'}
+                ${watch('role') === 'Agent' ? 'bg-blue-50 border-blue-500 text-blue-700 ring-2 ring-blue-500/20' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'}
               `}>
                 <input {...register('role')} type="radio" value="Agent" className="sr-only" />
                 <span className="font-medium">Agent</span>
               </label>
               <label className={`
                 flex items-center justify-center p-3 rounded-xl border cursor-pointer transition-all
-                ${register('role').value === 'Admin' ? 'bg-blue-50 border-blue-500 text-blue-700 ring-2 ring-blue-500/20' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'}
+                ${watch('role') === 'Admin' ? 'bg-blue-50 border-blue-500 text-blue-700 ring-2 ring-blue-500/20' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'}
               `}>
                 <input {...register('role')} type="radio" value="Admin" className="sr-only" />
                 <span className="font-medium">Admin</span>

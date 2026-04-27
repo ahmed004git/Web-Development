@@ -41,7 +41,7 @@ export async function createLead(formData: FormData) {
       notes,
     });
 
-    await recordActivity(lead._id, (session.user as any).id, 'Lead Creation', `Lead created by ${session.user.name}`);
+    await recordActivity(lead._id.toString(), (session.user as any).id, 'Lead Creation', `Lead created by ${session.user.name}`);
 
     // Email notification for new lead
     await sendEmail({
@@ -76,7 +76,7 @@ export async function updateLead(leadId: string, data: any) {
     const session = await getServerSession(authOptions);
     if (!session) throw new Error('Not authenticated');
 
-    const oldLead = await Lead.findById(leadId);
+    await Lead.findById(leadId);
     const lead = await Lead.findByIdAndUpdate(leadId, data, { new: true });
 
     let actionDetails = 'Updated fields: ' + Object.keys(data).join(', ');
